@@ -53,7 +53,6 @@ data = {
 data = RegexData(data)
 data.regex()
 
-print(f'{data.medical_data}')
 df = pd.DataFrame(data.medical_data)
 
 model = funcs.call_model()
@@ -66,6 +65,11 @@ st.markdown(f"### Resultados da simulação")
 funcs.return_value(value)
 
 st.markdown("### Calculadora de IMC:")
+
+st.latex(r'''
+    Imc =
+    \left(\frac{Peso}{Altura²}\right)
+    ''')
 
 weight = st.number_input("Peso:", min_value=1.0, max_value=500.0)
 
