@@ -10,10 +10,6 @@ def call_model() -> pickle:
     return model
 
 
-def return_value(value: float) -> None:
-    st.success(f"O valor estimado para seu plano de saúde é de {np.round(value, 2)} dolares")
-
-
 def func_bmi(weight: float, height: float) -> None:
     try:
         st.success(f"Valor IMC: {np.round(weight / height ** 2, 2)}")
