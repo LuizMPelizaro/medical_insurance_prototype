@@ -19,17 +19,17 @@ st.markdown("## Simulador de preço de plano de saúde")
 
 st.image(image_top)
 
-age = st.number_input("Idade", min_value=1, max_value=100, value=1, step=1)
+age = st.number_input("Idade", min_value=1, max_value=100, value=21, step=1)
 
 sex = st.selectbox(
     'Sexo :',
     ['Feminino', 'Masculino']
 )
 
-bmi = st.number_input("IMC:", min_value=1.0, max_value=100.0)
+bmi = st.number_input("IMC:", min_value=1.0, max_value=100.0,value=19.44)
 st.markdown("Caso não saiba calcular o imc no final da pagina existe uma calculadora!!")
 
-children = st.number_input("Numero de filhos", min_value=0, max_value=10, value=1, step=1)
+children = st.number_input("Numero de filhos", min_value=0, max_value=10, value=0, step=1)
 
 smoker = st.selectbox(
     "Fumante: ",
