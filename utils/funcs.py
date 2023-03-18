@@ -5,7 +5,8 @@ import streamlit as st
 
 
 def call_model() -> pickle:
-    with open(r"./models/model.pickle", "rb") as input_model:
+    model_file = "./models/model.pickle"
+    with open(model_file, "rb") as input_model:
         model = pickle.load(input_model)
     return model
 

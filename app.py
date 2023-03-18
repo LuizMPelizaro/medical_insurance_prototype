@@ -45,7 +45,7 @@ with st.expander("Clique aqui"):
 
     st.image(table_imc_image)
 
-children = st.number_input("Numero de filhos", min_value=0, max_value=10, value=0, step=1)
+children = st.number_input("Número de filhos", min_value=0, max_value=10, value=0, step=1)
 
 smoker = st.selectbox(
     "Fumante: ",
@@ -72,4 +72,4 @@ st.markdown(f"### Resultados da simulação")
 
 data.return_value()
 
-st.markdown("Projeto feito com o intuito de estudos na area de Data Science , erros de calculo podem acontecer.")
+st.markdown("Projeto feito com o intuito de estudos na área de Data Science , erros de cálculo podem acontecer.")

@@ -8,69 +8,47 @@ from utils.funcs import call_model
 
 
 class RegexData:
+    SEX_MAPPING = {'Feminino': 'female', 'Masculino': 'male'}
+    SMOKER_MAPPING = {'Sim': 'yes', 'Não': 'no'}
+    REGION_MAPPING = {'Sudoeste': 'southwest', 'Sudeste': 'southeast', 'Noroeste': 'northwest', 'Nordeste': 'northeast'}
+
     def __init__(self, medical_data: dict):
-        try:
-            self.__medical_data = medical_data
-        except TypeError as err:
-            raise print(f"Tipo de dados errado : {err}")
-        except ValueError as err:
-            raise print(f"Valores errado : {err}")
+        self.__medical_data = medical_data
 
     @property
     def medical_data(self):
         return self.__medical_data
 
     def regex_medical(self) -> dict:
-        for key in self.medical_data:
-            if key == 'sex':
-                if self.medical_data[key] == ['Feminino']:
-                    self.medical_data[key] = 'female'
-                elif self.medical_data[key] == ['Masculino']:
-                    self.medical_data[key] = 'male'
+        for key in ['sex', 'smoker', 'region']:
+            if key in self.medical_data:
+                value = self.medical_data[key][0]
+                if key == 'sex':
+                    self.medical_data[key] = self.SEX_MAPPING.get(value, value)
+                elif key == 'smoker':
+                    self.medical_data[key] = self.SMOKER_MAPPING.get(value, value)
+                elif key == 'region':
+                    self.medical_data[key] = self.REGION_MAPPING.get(value, value)
                 else:
-                    raise ValueError
-            if key == 'smoker':
-                if self.medical_data[key] == ['Sim']:
-                    self.medical_data[key] = 'yes'
-                elif self.medical_data[key] == ['Não']:
-                    self.medical_data[key] = 'no'
-                else:
-                    raise ValueError
-            if key == 'region':
-                if self.medical_data[key] == ['Sudoeste']:
-                    self.medical_data[key] = 'southwest'
-                elif self.medical_data[key] == ['Sudeste']:
-                    self.medical_data[key] = 'southeast'
-                elif self.medical_data[key] == ['Noroeste']:
-                    self.medical_data[key] = 'northwest'
-                elif self.medical_data[key] == ['Nordeste']:
-                    self.medical_data[key] = 'northeast'
-                else:
-                    raise ValueError
+                    raise ValueError(f'Valor inválido  para a chave {key}')
         return self.medical_data
 
     def create_data_set(self) -> pd.DataFrame:
-        try:
-            return pd.DataFrame(self.regex_medical())
-        except ValueError as err:
-            raise err
+        data = self.regex_medical()
+        return pd.DataFrame(data)
 
     @staticmethod
     def predict_model(model: pickle, data: pd.DataFrame) -> np:
-        if model:
+        if model is not None:
             return model.predict(data)
-        raise ValueError
+        else:
+            return None
 
     def return_value(self) -> None:
-        try:
-            data = self.create_data_set()
-            model = call_model()
-            value_estimated = self.predict_model(model, data)
-            if value_estimated > 0:
-                st.success(f"O valor estimado para seu plano de saúde é de {np.round(value_estimated[0], 2)} dolares")
-            else:
-                st.warning(f"Insira valores nos campos acimas")
-        except ValueError as err:
-            raise err
-        except TypeError as err:
-            raise err
+        data = self.create_data_set()
+        model = call_model()
+        value_estimated = self.predict_model(model, data)
+        if value_estimated is not None and value_estimated > 0:
+            st.success(f"O valor estimado para seu plano de saúde é de {np.round(value_estimated[0], 2)} dolares")
+        else:
+            st.warning(f"Insira valores nos campos acimas")
